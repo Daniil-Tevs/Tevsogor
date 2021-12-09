@@ -18,7 +18,7 @@ include_directories("inc/")
 link_directories("ext/SFML/lib/")	
 
 add_executable("${PROJECT_NAME}" main.cpp
-		Background.h First_Level.h Person.h)
+		Background.h First_Level.h Person.h Enemy.h First_level.cpp)
 
 target_link_libraries("${PROJECT_NAME}" sfml-graphics-s-d
 						  sfml-window-s-d
