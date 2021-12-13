@@ -1,108 +1,38 @@
-﻿#include <SFML/Graphics.hpp>
-#include <iostream>
-#include <array>
-#define width 1200
-#define height 800
-#define n 70
-#define n_e 9
-#define prt_n 16
-#define m 10
-#include "Background.h"
-#include "First_Level.h"
+﻿#include "Constants.h"
 #include "Person.h"
 #include "Enemy.h"
+#include "Arrows.h"
+#include "functions.h"
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(width, height), "Game");
+
     sf::View view;
     view.setSize(width, height);
     view.setCenter(width/2, height/2);
-    Background fon{"background.png"};
-    First_Level pol;
-    int fl=0,s=1,t=2;
-    int number=0,prt_number[prt_n];
-    Person main_p{"mainP.png", 0, height - static_cast<float>(pol.briks.getSize().y)-30};
+
+    int fl=0,s=1,t=2,t_a=0,number=0;
+
+    std::vector<Block*> background;
+    pull_of_background(background);
+
+    Block brick{"briks.png"}; //Или "data/skins/briks.png"?
+
+    std::vector<Block*> floor;
+    std::vector<int> mass_hole_numbers;
+    mass_hole_numbers= pull_of_floor(floor);
+
+    Person main_p{"mainP.png", 0, height - (float)brick.sizeY()-30};
+
     std::vector<Enemy*> enemies;
-    for(int i=0;i<n_e;i++)
-    {
-        if(i==0)
-            enemies.push_back(new Enemy(750*(i+1),height - static_cast<float>(pol.briks.getSize().y)-30,height - static_cast<float>(pol.briks.getSize().y)-30));
-        else if(i<=3)
-            enemies.push_back(new Enemy(750*(i+1),height/3,height - static_cast<float>(pol.briks.getSize().y)-30));
-        else if(i==4)
-            enemies.push_back(new Enemy(700*(i+1),height/3,height - static_cast<float>(pol.briks.getSize().y)-30));
-        else
-            enemies.push_back(new Enemy(4500+15*i+10*i/5,height/3,height - static_cast<float>(pol.briks.getSize().y)-30));
-    }
+    pull_enemies(enemies,height-brick.sizeY()-30);
+
     std::vector<Block*> prt;
-    for(int i=0;i<prt_n;i++)
-    {
-        if(i<2)
-        {
-            prt.push_back(new Block("briks-pol4.png"));
-            prt[i]->m_block->setPosition(pol.briks.getSize().x * (11+i),
-                                         height - static_cast<float>(pol.briks.getSize().y) - 30);
-        }
-        else if(i==2)
-        {
-            prt.push_back(new Block("briks-pol.png"));
-            prt[i]->m_block->setPosition(pol.briks.getSize().x * 12,
-                                         height - static_cast<float>(pol.briks.getSize().y) - 30 -
-                                         prt[i]->m_block_i.getSize().y);
-        }
-        else if(i<=5)
-        {
-            prt.push_back(new Block("briks-pol4.png"));
-            prt[i]->m_block->setPosition(pol.briks.getSize().x * (11 + i),
-                                         height - 2 * static_cast<float>(pol.briks.getSize().y) - 30 +
-                                         prt[i]->m_block_i.getSize().y);
-        }
-        else if(i<9)
-        {
-            prt.push_back(new Block("briks-pol4.png"));
-            prt[i]->m_block->setPosition(pol.briks.getSize().x * (13 + i),
-                                         height - 2 * static_cast<float>(pol.briks.getSize().y) - 30 +
-                                         prt[i]->m_block_i.getSize().y);
-        }
-        else if(i<11)
-        {
-            prt.push_back(new Block("briks-pol4.png"));
-            prt[i]->m_block->setPosition(pol.briks.getSize().x * (15 + i),
-                                         height - static_cast<float>(pol.briks.getSize().y) - 30);
-        }
-        else if(i==11)
-        {
-            prt.push_back(new Block("briks-pol.png"));
-            prt[i]->m_block->setPosition(pol.briks.getSize().x * (14 + i),
-                                         height - static_cast<float>(pol.briks.getSize().y) - 30-prt[i]->m_block_i.getSize().y/2-prt[i-1]->m_block_i.getSize().y);
-        }
-        else if(i==12)
-        {
-            prt.push_back(new Block("briks-pol4.png"));
-            prt[i]->m_block->setPosition(pol.briks.getSize().x * (15 + i),
-                                         height - 2*static_cast<float>(pol.briks.getSize().y) - 30-prt[i]->m_block_i.getSize().y/2);
-        }
-        else if(i==13)
-        {
-            prt.push_back(new Block("briks-pol4.png"));
-            prt[i]->m_block->setPosition(pol.briks.getSize().x * (16 + i),
-                                         height - 4*static_cast<float>(pol.briks.getSize().y) - 30-prt[i]->m_block_i.getSize().y/2);
-        }
-        else if(i==14)
-        {
-            prt.push_back(new Block("briks-pol.png"));
-            prt[i]->m_block->setPosition(pol.briks.getSize().x * (11 + i),
-                                         height - 3*static_cast<float>(pol.briks.getSize().y) - 30-prt[i]->m_block_i.getSize().y/2);
-        }
-        else if(i==15)
-        {
-            prt.push_back(new Block("briks-pol4.png"));
-            prt[i]->m_block->setPosition(pol.briks.getSize().x * (12 + i),
-                                         height - 4*static_cast<float>(pol.briks.getSize().y) - 30-prt[i]->m_block_i.getSize().y/2);
-        }
-    }
-    for(int i=0;i<prt_n;i++)
-        prt_number[i]=prt[i]->m_block->getPosition().x;
+    pull_of_platforms(prt,brick.sizeX(),brick.sizeY());
+
+    std::vector<Arrow*> arrows;
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -111,14 +41,14 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-        if(main_p.m_x + 200 > (width*s-100))
+        if(main_p.getX() + 200 > (width*s-100))
         {
             view.move(width,0);
             fl=1;
             s++;
             t=s-1;
         }
-        if(main_p.m_x<width*t-50)
+        if(main_p.getX()<width*t-50)
         {
             view.move(-(width),0);
             fl=0;
@@ -127,10 +57,10 @@ int main()
         window.setView(view);
         window.clear();
         for(int j=0;j<m;j++)
-            window.draw(fon.b_fon_mass[j]);
+            window.draw(*background[j]->getShape());
         for(int i=0;i<n;i++)
-            window.draw(pol.mas[i]);
-        if(main_p.Moving(pol.briks.getSize().x,pol.mass,prt))
+            window.draw(*floor[i]->getShape());
+        if(main_p.Moving(brick.sizeX(),mass_hole_numbers,prt))
         {
         }
         else
@@ -138,11 +68,32 @@ int main()
             window.draw(main_p.text);
         }
         window.draw(main_p.m_person);
+
+        if(t_a%1400==0)
+        {
+            for(int i=0;i<n_a;i++)
+                arrows.push_back(new Arrow("arrow.png",2600+i*50,-20,height - (float)brick.sizeY() - 30));
+            t_a=1;
+        }
+        else if(arrows.size()!=0)
+        {
+            for(int i=0;i<arrows.size();i++)
+            {
+                if(arrows[i]->Moving()) {delete arrows[i]; arrows.erase(arrows.begin() + i); i--;}
+                else
+                {
+                    if(main_p.getX()>=arrows[i]->getShape()->getPosition().x && main_p.getX()<=arrows[i]->getShape()->getPosition().x+arrows[i]->getSize_x() && main_p.getY()-main_p.m_person.getOrigin().y<=arrows[i]->getShape()->getPosition().y+arrows[i]->getSize_y() && main_p.getY()+main_p.m_person.getOrigin().y>=arrows[i]->getShape()->getPosition().y)
+                        main_p.health_d--;
+                    window.draw(*arrows[i]->getShape());
+                }
+            }
+        }
+        t_a++;
         for(int i=0;i<prt_n;i++)
-            window.draw(*prt[i]->m_block);
+            window.draw(*prt[i]->getShape());
         for(int i=0;i<enemies.size();i++)
         {
-            if(enemies[i]->health_d==0)
+            if(enemies[i]->m_health==0)
             {
                 delete enemies[i];
                 enemies.erase(enemies.begin()+i);
@@ -151,10 +102,10 @@ int main()
             else
             {
                 window.draw(*enemies[i]->getShape());
-                enemies[i]->Moving(pol.briks.getSize().x,pol.mass,prt);
-                if(enemies[i]->health_d!=0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) && main_p.m_x+main_p.m_person.getOrigin().x>=(enemies[i]->m_x-enemies[i]->getShape()->getOrigin().x) && main_p.m_x-main_p.m_person.getOrigin().x<=(enemies[i]->m_x+enemies[i]->getShape()->getOrigin().x) && number%50==0 && -main_p.m_person.getOrigin().y<=(main_p.m_person.getPosition().y-enemies[i]->getShape()->getPosition().y) && (main_p.m_person.getPosition().y-enemies[i]->getShape()->getPosition().y)<=main_p.m_person.getOrigin().y)
-                    enemies[i]->health_d-=1;
-                if(main_p.health_d!=0 && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) && main_p.m_x>=(enemies[i]->m_x-enemies[i]->getShape()->getOrigin().x) && main_p.m_x<=(enemies[i]->m_x+enemies[i]->getShape()->getOrigin().x) && number%50==0 && -main_p.m_person.getOrigin().y<=(main_p.m_person.getPosition().y-enemies[i]->getShape()->getPosition().y) && (main_p.m_person.getPosition().y-enemies[i]->getShape()->getPosition().y)<=main_p.m_person.getOrigin().y)
+                enemies[i]->Moving(brick.sizeX(),mass_hole_numbers,prt);
+                if(enemies[i]->m_health!=0 && (sf::Keyboard::isKeyPressed(sf::Keyboard::E)) && main_p.getX()+main_p.m_person.getOrigin().x>=(enemies[i]->getX()-enemies[i]->getShape()->getOrigin().x) && main_p.getX()-main_p.m_person.getOrigin().x<=(enemies[i]->getX()+enemies[i]->getShape()->getOrigin().x) && number%50==0 && -main_p.m_person.getOrigin().y<=(main_p.m_person.getPosition().y-enemies[i]->getShape()->getPosition().y) && (main_p.m_person.getPosition().y-enemies[i]->getShape()->getPosition().y)<=main_p.m_person.getOrigin().y)
+                    enemies[i]->m_health-=1;
+                if(main_p.health_d!=0 && !(sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) && main_p.getX()>=(enemies[i]->getX()-enemies[i]->getShape()->getOrigin().x) && main_p.getX()<=(enemies[i]->getX()+enemies[i]->getShape()->getOrigin().x) && number%50==0 && -main_p.m_person.getOrigin().y<=(main_p.m_person.getPosition().y-enemies[i]->getShape()->getPosition().y) && (main_p.m_person.getPosition().y-enemies[i]->getShape()->getPosition().y)<=main_p.m_person.getOrigin().y)
                     main_p.health_d-=1;
             }
         }
