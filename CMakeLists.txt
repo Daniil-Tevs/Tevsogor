@@ -15,19 +15,22 @@ add_definitions(-DSFML_STATIC)		 # дефайны
 
 include_directories("ext/SFML/include/")	# добавляем директории
 include_directories("inc/")
-include_directories("data/skins/")
-link_directories("ext/SFML/lib/")	
+include_directories("src/")
+include_directories("skins/")
+link_directories("ext/SFML/lib/")
 
 add_executable("${PROJECT_NAME}" main.cpp
-		Person.h Person.cpp
-		Arrows.h Arrow.cpp
-		Enemy.h Enemy.cpp
-		functions.h Constants.h
-		Block.h
-		"Pull of  enemies.cpp"
-		"Pull of platforms.cpp"
-		Pull_of_floor.cpp
-		Pull_of_background.cpp Block.cpp)
+		inc/Person.h src/Person.cpp
+		inc/Arrows.h src/Arrow.cpp
+		inc/Enemy.h src/Enemy.cpp
+		inc/functions.h inc/Constants.h
+		inc/Block.h src/Block.cpp
+		inc/Text.h
+		src/Pull_of_enemies.cpp
+		src/Pull_of_platforms.cpp
+		src/Pull_of_floor.cpp
+		src/Pull_of_background.cpp
+		src/Person_dop_functions.cpp)
 
 target_link_libraries("${PROJECT_NAME}" sfml-graphics-s-d
 						  sfml-window-s-d
