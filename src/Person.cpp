@@ -3,6 +3,12 @@ float Person::getX() const
 {return m_x;}
 float Person::getY() const
 {return m_y;}
+sf::Sprite Person::getShape()
+{return m_person;}
+sf::Sprite* Person::getHealth()
+{
+    return mass_health;
+}
 void Person::Action()
 {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::E) && fl_kick==0)
@@ -24,10 +30,10 @@ void Person::Health(int place)
 
 void Person::pull_main_p_t(sf::Texture texture[n_main_p])
 {
-    texture[0].loadFromFile("../data/skins/mainP.png");
-    texture[1].loadFromFile("../data/skins/mainP_noga.png");
-    texture[2].loadFromFile("../data/skins/mainP_udar.png");
-    texture[3].loadFromFile("../data/skins/mainP_udar_padenie_o.png");
+    texture[0].loadFromFile("data/skins/mainP.png");
+    texture[1].loadFromFile("data/skins/mainP_noga.png");
+    texture[2].loadFromFile("data/skins/mainP_udar.png");
+    texture[3].loadFromFile("data/skins/mainP_udar_padenie_o.png");
 }
 
 bool Person::Moving(int t,std::vector<int> mass,const std::vector<Block*>& prt)
