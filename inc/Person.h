@@ -19,14 +19,15 @@ private:
     void Jump(int t);
     void Move(int fl_block,char fl_stop);
     void pull_main_p_t(sf::Texture texture[n_main_p]);
-    int health_d=10,fl_run=2,fl_pr=0;
-public:
+    int fl_run=2,fl_pr=0;
     sf::Sprite m_person;
     sf::Sprite mass_health[10];
+public:
+    int health_d=10;
     Person(const std::string& a,float x,float y)
     {
         pull_main_p_t(m_texture);
-        health_t.loadFromFile("../data/skins/health.png");
+        health_t.loadFromFile("data/skins/health.png");
         os=p_y;
         m_image.loadFromFile(a);
         m_person.setTexture(m_texture[0]);
@@ -37,9 +38,10 @@ public:
     }
     float getX() const;
     float getY() const;
+    sf::Sprite getShape();
+    sf::Sprite* getHealth();
     bool Moving(int t,std::vector<int> mass,const std::vector<Block*>& prt);
     void Action();
-
     void Health(int s);
     ~Person(){}
 };

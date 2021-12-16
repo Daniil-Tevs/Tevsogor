@@ -32,17 +32,16 @@ add_executable("${PROJECT_NAME}" main.cpp
 		src/Pull_of_background.cpp
 		src/Person_dop_functions.cpp)
 
-target_link_libraries("${PROJECT_NAME}" sfml-graphics-s-d
-						  sfml-window-s-d
-						  sfml-system-s-d
-						  opengl32
-						  freetype
-						  winmm
-						  gdi32
-						  sfml-audio-s-d
-						  openal32
-						  flac
-						  vorbisenc
-						  vorbisfile
-						  vorbis
-						  ogg)
+target_link_libraries("${PROJECT_NAME}"
+		debug sfml-graphics-s-d
+		debug sfml-window-s-d
+		debug sfml-system-s-d
+		debug sfml-audio-s-d)
+
+target_link_libraries("${PROJECT_NAME}"
+		optimized sfml-graphics-s
+		optimized sfml-window-s
+		optimized sfml-system-s
+		optimized sfml-audio-s)
+
+target_link_libraries("${PROJECT_NAME}" opengl32 freetype winmm gdi32 openal32 flac vorbisenc vorbisfile vorbis ogg)
