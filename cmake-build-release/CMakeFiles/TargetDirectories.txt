@@ -1,3 +1,0 @@
-C:/Users/Admin/CLionProjects/Game/cmake-build-release/CMakeFiles/Game.dir
-C:/Users/Admin/CLionProjects/Game/cmake-build-release/CMakeFiles/edit_cache.dir
-C:/Users/Admin/CLionProjects/Game/cmake-build-release/CMakeFiles/rebuild_cache.dir
